@@ -67,8 +67,8 @@ const getallmovies = (req, res) => {
                 }
             }
 
-            // return a promise to find the specified results
-            return Movie.find ({}).limit (limit).skip (startIndex);
+            // return a promise to find the specified results in descending sort order
+            return Movie.find ({}).sort ({ avg_rating: -1 }).limit (limit).skip (startIndex);
 
         }).then ((movies) => {
 
