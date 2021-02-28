@@ -11,7 +11,7 @@
 config = {
     PORT: 80,
     database_URL: 'your_mongodb_database_url',
-    REGISTER_TOKEN: 'Sample Register token',
+    REGISTER_TOKEN: 'Sample Register token secret',
     MAIL_SERVICE: 'gmail',
     PROJECT_URL: 'http://localhost',
     SENDER_USER: 'your_email_address',
