@@ -40,6 +40,9 @@ RouteHandler.post ('/dashboard/comment', checklogin, comment);
 // rate route
 RouteHandler.post ('/dashboard/rate', checklogin, rate);
 
+// handling the api-docs endpoint
+RouteHandler.get ('/docs', (req, res) => { return res.status (200).redirect ('https://documenter.getpostman.com/view/11784786/TWDdiDPW#508220db-6699-4627-b1c6-d751ec8d3c31')}); // api-docs page
+
 // exporting the RouteHandler
 
 module.exports = {
