@@ -20,7 +20,8 @@ const reset = (req, res) => {
         }
         let token = req.params.token;
         let _id = req.params.id;
-        const new_password = _.pick (req.body, ['new_password']);
+        let userdoc = undefined;
+        const { new_password } = _.pick (req.body, ['new_password']);
         if (!new_password) {
             throw new Error ('no new password is mentioned in the request');
         } else if (!validatePassword (new_password)) {
@@ -36,8 +37,21 @@ const reset = (req, res) => {
                 throw new Error ('user with that id not found');
             }
 
+            userdoc = user;
+            // check weather the user has not entered the same password as before
+            return User.comparePassword (new_password, user.password);
+
+        }).then ((isSameBefore) => {
+
+            // if the user entered the same password as before, then it will make the jwt link valid after 1 password attempt
+            // so ensuring that the user enter some other password to make the email link usable for only 1 time password reset
+
+            if (isSameBefore) {
+                throw new Error ('please enter some other password this password is not secure for you anymore');
+            }
+            
             // generate the secret key to decode the token
-            const secretkey = `${user.password}${user.createdAt.getTime ()}`;
+            const secretkey = `${userdoc.password}${userdoc.createdAt.getTime ()}`;
             const decodedtoken = jwt.verify (token, secretkey);
             if (decodedtoken._id !== _id) {
                 throw new Error ('you are not authorized to reset the password for this user');
